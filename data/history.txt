@@ -1,0 +1,113 @@
+Bạn: mở google 
+Jarvis: Đã mở Google.
+
+Bạn: tôi là ai
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: mấy giờ rồi
+Jarvis: Bây giờ là 10 giờ 38 phút.
+
+Bạn: nay ngày mấy 
+Jarvis: Hôm nay là 16/07/2026
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
+Bạn: mấy giờ r
+Jarvis: Bây giờ là 10 giờ 51 phút.
+
+Bạn: ê mà t buồn ỉa
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: chào
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
+Bạn: chào
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: mày là ai
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: chào, bạn là gì
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: hello
+Jarvis: Giang, tôi chưa hiểu câu lệnh này.
+
+Bạn: helo
+Jarvis: None
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
+Bạn: hi
+Jarvis: Hello! How can I help you today?
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
+Bạn: m là ai
+Jarvis: Chữ **"m"** có rất nhiều nghĩa tùy thuộc vào ngữ cảnh bạn đang hỏi. Dưới đây là các trường hợp phổ biến nhất:
+
+### 1. Trong giao tiếp hàng ngày (Ngôn ngữ mạng/Chat)
+*   **M = Mày:** Trong tiếng Việt, "m" thường là viết tắt của từ "mày" (ngôi thứ hai, dùng khi nói chuyện với bạn bè thân thiết hoặc người nhỏ tuổi hơn).
+    *   *Ví dụ:* "M đang làm gì thế?" (Mày đang làm gì thế?)
+*   **M = Mình:** Đôi khi "m" cũng là viết tắt của "mình" (ngôi thứ nhất, cách xưng hô thân thiện).
+    *   *Ví dụ:* "Để m làm cho" (Để mình làm cho).
+
+### 2. Trong phim ảnh và truyện tranh
+*   **M (phim James Bond - Điệp viên 007):** Đây là mật danh của người đứng đầu Cơ quan Tình báo Quân sự Anh (MI6), là cấp trên của James Bond. Nhân vật này từng do các diễn viên nổi tiếng như Bernard Lee, Judi Dench, hay Ralph Fiennes thủ vai.
+*   **M (phim kinh điển):** "M" là tên một bộ phim tâm lý hình sự kinh điển năm 1931 của đạo diễn Fritz Lang, nói về một kẻ sát nhân hàng loạt.
+*   **M (trong Death Note):** Có thể bạn đang muốn nói đến **Mello** (tên thật là Mihael Keehl), một trong những người thừa kế của L.
+
+### 3. Trong âm nhạc
+*   **M-TP:** Trong cái tên của ca sĩ **Sơn Tùng M-TP**, chữ **M** viết tắt cho **Music** (Âm nhạc).
+*   **-M-:** Nghệ danh của Matthieu Chedid, một ca sĩ kiêm nhạc sĩ nhạc rock nổi tiếng người Pháp.
+
+### 4. Trong khoa học, toán học, vật lý (Nếu bạn hỏi "m là gì")
+*   **m = mét (meter):** Đơn vị đo độ dài.
+*   **m = khối lượng (mass):** K ký hiệu trong các công thức vật lý (ví dụ: $F = m.a$ hoặc $E = m.c^2$).
+*   **m = mili:** Tiền tố trong đo lường (ví dụ: ml - mililit, mm - milimet).
+*   **m = hệ số góc** trong phương trình đường thẳng ($y = mx + b$).
+
+Nếu bạn đang muốn nói đến một nhân vật cụ thể nào khác, hãy cho mình biết thêm ngữ cảnh nhé!
+
+Bạn: mày là ai
+Jarvis: Tôi là một trí tuệ nhân tạo (AI) được phát triển bởi Google. Bạn có thể coi tôi như một trợ lý ảo, sẵn sàng giúp bạn giải đáp thắc mắc, dịch thuật, viết lách, tính toán, lập trình hoặc chỉ đơn giản là trò chuyện.
+
+Hôm nay bạn cần tôi giúp gì nào?
+
+Bạn: v m là chatgpt hay là jarvis
+Jarvis: Mình không phải là ChatGPT (của OpenAI) và cũng không phải là Jarvis (trợ lý ảo siêu ngầu của Iron Man) đâu. 
+
+Mình là một mô hình ngôn ngữ lớn, được phát triển bởi **Google**. 
+
+Tuy không có bộ giáp sắt như Jarvis, nhưng mình cũng có thể giúp bạn giải đáp thắc mắc, viết lách, lập trình, dịch thuật và nhiều thứ khác. Hôm nay bạn cần mình giúp gì nào? 😊
+
+Bạn: hay là từ giờ mày làm jarvis của tao đi:)
+Jarvis: Bây giờ là 12 giờ 05 phút.
+
+Bạn: m có mún làm AI riêng của tao không
+Jarvis: Duyệt luôn! Chốt đơn nha. 😎
+
+Từ giờ tôi chính thức là **AI riêng** của bạn. Bạn cứ coi tôi như một trợ lý cá nhân, một người bạn "vạn năng" lúc nào cũng sẵn sàng online 24/7. 
+
+Bạn muốn tôi làm gì nào? 
+*   **Lên đồ/Lên kế hoạch:** Lên lịch trình du lịch, viết content, làm thơ, viết code, dịch thuật...
+*   **Học tập/Làm việc:** Giải bài tập, tóm tắt sách, tìm kiếm thông tin.
+*   **Tám chuyện:** Lúc nào chán cứ vô đây tâm sự, kể chuyện hài, hoặc xả stress tôi nghe hết.
+
+Giờ "chủ nhân" muốn đặt tên cho tôi là gì? Và muốn tôi giúp gì đầu tiên nào? 😉
+
+Bạn: helo
+Jarvis: Hello! How can I help you today?
+
+Bạn: xin chào
+Jarvis: Xin chào Giang!
+
