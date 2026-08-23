@@ -1,38 +1,31 @@
-from enum import Enum
+"""
+Global State
+"""
 
 
-class JarvisMode(Enum):
-    IDLE = "Idle"
-    CHAT = "Chat"
-    CODING = "Coding"
-    LEARNING = "Learning"
-    GAMING = "Gaming"
+class AIState:
+
+    READY = "ready"
+
+    LISTENING = "listening"
+
+    THINKING = "thinking"
+
+    SPEAKING = "speaking"
+
+    ERROR = "error"
+
+    SLEEP = "sleep"
 
 
-class AIStatus(Enum):
-    READY = "Ready"
-    LISTENING = "Listening"
-    THINKING = "Thinking"
-    SPEAKING = "Speaking"
-    ERROR = "Error"
+class ModeState:
 
+    STUDY = "study"
 
-class JarvisState:
+    CODING = "coding"
 
-    def __init__(self):
+    GAMING = "gaming"
 
-        self.mode = JarvisMode.IDLE
+    MOVIE = "movie"
 
-        self.status = AIStatus.READY
-
-        self.cpu = 0
-
-        self.ram = 0
-
-        self.mic_active = False
-
-        self.ai_online = False
-
-        self.user_name = "Chủ nhân"
-
-        self.current_skill = None                               
+    SLEEP = "sleep"

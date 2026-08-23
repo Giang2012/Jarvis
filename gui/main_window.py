@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QMainWindow
 from PySide6.QtCore import Qt
 
 from core.brain import Brain
-from gui.dashboard import Dashboard
+from gui.dashboard.dashboard import Dashboard
 
 
 class MainWindow(QMainWindow):
@@ -11,46 +11,50 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # =========================
-        # WINDOW CONFIG
+        # WINDOW
         # =========================
 
-        self.setWindowTitle(
-            "J.A.R.V.I.S"
-        )
+        self.setWindowTitle("J.A.R.V.I.S")
 
-        self.resize(
-            1600,
-            900
-        )
+        self.resize(1600, 900)
 
-
-        # full dark background
         self.setStyleSheet("""
-            QMainWindow {
-                background-color: #05070a;
-            }
+        QMainWindow{
+            background:#05070a;
+        }
         """)
 
-
         # =========================
-        # AI BRAIN
+        # AI
         # =========================
-
-        self.brain = Brain()
 
 
         # =========================
-        # DASHBOARD
+        # UI
         # =========================
 
-        self.dashboard = Dashboard()
+        try:
+            self.brain = Brain()
+        except Exception as e:
+            print("Brain disabled:", e)
+            self.brain = None
 
-        self.setCentralWidget(
-            self.dashboard
-        )
+        self.dashboard = Dashboard(self.brain)
 
+        self.setCentralWidget(self.dashboard)
 
-        # remove default frame
+        # =========================
+        # MODE
+        # =========================
+        if self.brain is not None:
+                self.brain.mode_manager.setMode("CODING")
+
+        # =========================
+        # WINDOW FLAGS
+        # =========================
+
         self.setWindowFlags(
             Qt.FramelessWindowHint
         )
+
+        print("MainWindow Loaded")

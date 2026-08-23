@@ -1,19 +1,31 @@
+from collections import defaultdict
+
+
 class EventBus:
 
     def __init__(self):
 
-        self.listeners = {}
+        self.events = defaultdict(list)
 
-    def subscribe(self, event_name, callback):
+    def subscribe(self, event, callback):
 
-        if event_name not in self.listeners:
-            self.listeners[event_name] = []
+        self.events[event].append(callback)
 
-        self.listeners[event_name].append(callback)
+    def unsubscribe(self, event, callback):
 
-    def emit(self, event_name, data=None):
+        if callback in self.events[event]:
 
-        if event_name in self.listeners:
+            self.events[event].remove(callback)
 
-            for callback in self.listeners[event_name]:
-                callback(data)
+    def clear(self):
+
+        self.events.clear()
+
+    def emit(self, event, *args, **kwargs):
+
+        if event not in self.events:
+            return
+
+        for callback in self.events[event]:
+
+            callback(*args, **kwargs)

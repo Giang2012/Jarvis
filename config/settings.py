@@ -1,0 +1,12 @@
+GEMINI_API_KEY=""
+DEBUG = True
+
+APP_NAME = "J.A.R.V.I.S"
+
+VERSION = "2.0"
+
+DEFAULT_MODE = "DEFAULT"
+
+GEMINI_MODEL = "gemini-2.5-flash"
+
+MAX_HISTORY = 50

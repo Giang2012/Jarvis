@@ -1,168 +1,97 @@
 from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import (
     QPainter,
     QColor,
-    QPen
+    QPen,
 )
-
-import random
-import math
+from PySide6.QtCore import (
+    Qt,
+    QTimer,
+)
 
 
 class HUDBackground(QWidget):
 
-    def __init__(self):
+    def __init__(self, mode_manager):
         super().__init__()
 
-        self.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.mode_manager = mode_manager
 
-        self.scan_y = 0
-        self.rotation = 0
-
-        self.stars = []
-
-        for _ in range(120):
-
-            self.stars.append([
-                random.randint(0, 1920),
-                random.randint(0, 1080),
-                random.randint(1, 3),
-                random.randint(40, 150)
-            ])
+        self.offset = 0
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.animate)
-        self.timer.start(16)
+        self.timer.start(30)
 
     def animate(self):
 
-        self.scan_y += 2
+        self.offset += 1
 
-        if self.scan_y > self.height():
-            self.scan_y = 0
-
-        self.rotation += 0.5
-
-        if self.rotation >= 360:
-            self.rotation = 0
-
-        for star in self.stars:
-
-            star[1] += 0.15
-
-            if star[1] > self.height():
-
-                star[0] = random.randint(0, self.width())
-                star[1] = 0
+        if self.offset >= 40:
+            self.offset = 0
 
         self.update()
 
-    def paintEvent(self, event):
+    def paintEvent(self, e):
 
-        painter = QPainter(self)
+        p = QPainter(self)
 
-        painter.setRenderHint(QPainter.Antialiasing)
+        p.setRenderHint(
+            QPainter.Antialiasing
+        )
 
-        w = self.width()
-        h = self.height()
-
-        painter.fillRect(
+        p.fillRect(
             self.rect(),
-            QColor(5, 10, 20)
+            QColor(5, 8, 15)
         )
-
-        # grid
 
         pen = QPen(
-            QColor(0, 255, 255, 20),
-            1
+            QColor(0, 216, 255, 22)
         )
 
-        painter.setPen(pen)
+        pen.setWidth(1)
 
-        step = 40
+        p.setPen(pen)
 
-        for x in range(0, w, step):
-            painter.drawLine(x, 0, x, h)
+        grid = 40
 
-        for y in range(0, h, step):
-            painter.drawLine(0, y, w, y)
-
-        # stars
-
-        painter.setPen(Qt.NoPen)
-
-        for x, y, r, a in self.stars:
-
-            painter.setBrush(
-                QColor(0, 255, 255, a)
+        for x in range(
+            self.offset,
+            self.width(),
+            grid
+        ):
+            p.drawLine(
+                x,
+                0,
+                x,
+                self.height()
             )
 
-            painter.drawEllipse(
-                int(x),
-                int(y),
-                r,
-                r
+        for y in range(
+            self.offset,
+            self.height(),
+            grid
+        ):
+            p.drawLine(
+                0,
+                y,
+                self.width(),
+                y
             )
 
-        # scan line
-
-        painter.fillRect(
-            0,
-            self.scan_y,
-            w,
-            3,
-            QColor(0, 255, 255, 80)
+        pen.setColor(
+            QColor(0,216,255,40)
         )
 
-        # center radar
+        pen.setWidth(2)
 
-        cx = w / 2
-        cy = h / 2
+        p.setPen(pen)
 
-        radius = min(w, h) / 3
-
-        pen = QPen(
-            QColor(0, 255, 255, 18),
-            1
-        )
-
-        painter.setPen(pen)
-
-        for i in range(1, 6):
-
-            painter.drawEllipse(
-                cx - radius * i / 5,
-                cy - radius * i / 5,
-                radius * 2 * i / 5,
-                radius * 2 * i / 5
+        p.drawRect(
+            self.rect().adjusted(
+                10,
+                10,
+                -10,
+                -10
             )
-
-        # rotating beam
-
-        angle = math.radians(self.rotation)
-
-        x = cx + math.cos(angle) * radius
-        y = cy + math.sin(angle) * radius
-
-        pen = QPen(
-            QColor(0, 255, 255, 100),
-            2
         )
-
-        painter.setPen(pen)
-
-        painter.drawLine(cx, cy, x, y)
-
-        # crosshair
-
-        pen = QPen(
-            QColor(0,255,255,25),
-            1
-        )
-
-        painter.setPen(pen)
-
-        painter.drawLine(cx-radius, cy, cx+radius, cy)
-        painter.drawLine(cx, cy-radius, cx, cy+radius)

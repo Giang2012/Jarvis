@@ -1,16 +1,28 @@
-class Events:
-    STATUS_CHANGED = "status_changed"
+"""
+JARVIS Global Events
+"""
 
-    MODE_CHANGED = "mode_changed"
+BOOT_START = "boot.start"
+BOOT_FINISH = "boot.finish"
 
-    USER_MESSAGE = "user_message"
+AI_READY = "ai.ready"
+AI_SLEEP = "ai.sleep"
+AI_LISTENING = "ai.listening"
+AI_THINKING = "ai.thinking"
+AI_SPEAKING = "ai.speaking"
 
-    AI_MESSAGE = "ai_message"
+MODE_CHANGED = "mode.changed"
+THEME_CHANGED = "theme.changed"
 
-    VOICE_STARTED = "voice_started"
+NOTIFICATION = "notification"
 
-    VOICE_STOPPED = "voice_stopped"
+CPU_UPDATED = "cpu.updated"
+RAM_UPDATED = "ram.updated"
+GPU_UPDATED = "gpu.updated"
+NETWORK_UPDATED = "network.updated"
 
-    AI_CONNECTED = "ai_connected"
+WEATHER_UPDATED = "weather.updated"
+MUSIC_UPDATED = "music.updated"
 
-    AI_DISCONNECTED = "ai_disconnected"
+VOICE_WAKE = "voice.wake"
+VOICE_SLEEP = "voice.sleep"

@@ -1,10 +1,12 @@
-from ai.chatbot import ChatBot
+from skills.base_skill import BaseSkill
 
 
-class ChatSkill:
+class ChatSkill(BaseSkill):
 
-    def __init__(self):
-        self.bot = ChatBot()
+    name = "CHAT"
 
-    def run(self, text):
-        return self.bot.ask(text)
+    def can_handle(self, text):
+        return False
+
+    def execute(self, text):
+        return None
