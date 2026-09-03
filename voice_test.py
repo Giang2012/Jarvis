@@ -1,31 +1,34 @@
-import sounddevice as sd
-import numpy as np
-import wave
+from services.voice_service import VoiceService
 
+print("=" * 50)
+print("       J.A.R.V.I.S VOICE TEST")
+print("=" * 50)
 
-mic_id = 11  # microphone của bạn
+voice = VoiceService()
 
-duration = 5
-sample_rate = 44100
+print()
+print("Microphone device : 20")
+print("Sample rate       :", voice.sample_rate)
+print("Channels          :", voice.channels)
+print()
 
-print("JARVIS đang nghe...")
+print(">>> JARVIS DANG NGHE <<<")
+print("Hay noi mot cau tieng Viet...")
+print("(5 giay)")
 
-audio = sd.rec(
-    int(duration * sample_rate),
-    samplerate=sample_rate,
-    channels=1,
-    dtype=np.int16,
-    device=mic_id
-)
+try:
+    text = voice.listen_once(seconds=5)
 
-sd.wait()
+    print()
+    print("-" * 50)
 
-print("Đã nghe xong!")
+    if text:
+        print("BAN NOI:")
+        print(text)
+    else:
+        print("JARVIS khong nghe thay gi.")
 
-with wave.open("test_voice.wav", "wb") as file:
-    file.setnchannels(1)
-    file.setsampwidth(2)
-    file.setframerate(sample_rate)
-    file.writeframes(audio.tobytes())
-
-print("Đã lưu file test_voice.wav")
+except Exception as e:
+    print()
+    print("LOI:")
+    print(type(e).__name__, e)

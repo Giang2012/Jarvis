@@ -1,4 +1,4 @@
-from PySide6.QtGui import *
+from PySide6.QtGui import QColor
 
 
 class Flash:
@@ -40,15 +40,9 @@ class Flash:
             rect,
 
             QColor(
-
                 255,
-
                 255,
-
                 255,
-
                 self.alpha
-
             )
-
         )

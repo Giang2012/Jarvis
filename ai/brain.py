@@ -6,6 +6,8 @@ from ai.executor import Executor
 from ai.planner import Planner
 from ai.ai_manager import AIManager
 
+from memory.memory_manager import MemoryManager
+
 
 class Brain(QObject):
 
@@ -18,49 +20,71 @@ class Brain(QObject):
 
         self.services = services
 
-        # =========================
-        # AI COMPONENTS
-        # =========================
+        # =====================================================
+        # MEMORY
+        # =====================================================
+
+        self.memory = MemoryManager()
+
+        # =====================================================
+        # AI CORE
+        # =====================================================
 
         self.intent = IntentRecognizer()
 
-        self.reasoner = Reasoner()
+        self.reasoner = Reasoner(
+            self.intent
+        )
 
-        # =========================
-        # SKILL PLANNER
-        # =========================
+        # =====================================================
+        # SKILLS
+        # =====================================================
 
         self.planner = Planner(
             self.services
         )
 
-        # =========================
-        # EXECUTOR
-        # =========================
-
         self.executor = Executor(
             self.planner
         )
 
-        # =========================
-        # AI FALLBACK
-        # =========================
+        # =====================================================
+        # LLM
+        # =====================================================
 
         self.ai = AIManager(
             provider="ollama"
         )
 
-    # =====================================================
+    # =========================================================
     # STATE
-    # =====================================================
+    # =========================================================
 
     def set_state(self, state):
 
         self.stateChanged.emit(state)
 
-    # =====================================================
+    # =========================================================
+    # MEMORY
+    # =========================================================
+
+    def remember_user(self, text):
+
+        self.memory.short.add(
+            "user",
+            text
+        )
+
+    def remember_ai(self, text):
+
+        self.memory.short.add(
+            "assistant",
+            text
+        )
+
+    # =========================================================
     # PROCESS
-    # =====================================================
+    # =========================================================
 
     def process(self, text):
 
@@ -69,37 +93,64 @@ class Brain(QObject):
         if not text:
             return ""
 
-        # =========================
+        # -----------------------------------------------------
+        # USER MEMORY
+        # -----------------------------------------------------
+
+        self.remember_user(text)
+
+        # -----------------------------------------------------
         # LISTENING
-        # =========================
+        # -----------------------------------------------------
 
-        self.set_state("LISTENING")
+        self.set_state(
+            "LISTENING"
+        )
 
-        # =========================
+        # -----------------------------------------------------
         # INTENT
-        # =========================
+        # -----------------------------------------------------
 
         intent = self.intent.detect(
             text
         )
 
-        # =========================
+        print(
+            f"[JARVIS] Intent: {intent}"
+        )
+
+        # -----------------------------------------------------
         # THINKING
-        # =========================
+        # -----------------------------------------------------
 
-        self.set_state("THINKING")
+        self.set_state(
+            "THINKING"
+        )
 
-        # =========================
+        # -----------------------------------------------------
         # BUILD PLAN
-        # =========================
+        # -----------------------------------------------------
 
         plan = self.reasoner.build(
             text
         )
 
-        # =========================
+        print(
+            "[JARVIS] Plan:",
+            [
+                {
+                    "action": task.action,
+                    "target": task.target
+                }
+                for task in plan
+            ]
+        )
+
+        # -----------------------------------------------------
         # EXECUTE
-        # =========================
+        # -----------------------------------------------------
+
+        results = []
 
         if plan:
 
@@ -107,36 +158,59 @@ class Brain(QObject):
                 plan
             )
 
-            if results:
+        # -----------------------------------------------------
+        # CLEAN RESULTS
+        # -----------------------------------------------------
 
-                reply = results[0]
+        valid_results = [
+            str(result)
+            for result in results
+            if result is not None
+            and str(result).strip()
+        ]
 
-                if reply is not None:
+        # -----------------------------------------------------
+        # CHAT / FALLBACK
+        # -----------------------------------------------------
 
-                    reply = str(reply)
-
-                    self.set_state("READY")
-
-                    self.replyReady.emit(
-                        reply
-                    )
-
-                    return reply
-
-        # =========================
-        # AI FALLBACK
-        # =========================
-
-        reply = self.ai.ask(
-            text
+        should_chat = (
+            not valid_results
+            or any(
+                task.action == "CHAT"
+                for task in plan
+            )
         )
 
-        reply = str(reply)
+        if should_chat:
 
-        self.set_state("READY")
+            reply = self.ai.ask(
+                text
+            )
+
+        else:
+
+            reply = "\n".join(
+                valid_results
+            )
+
+        # -----------------------------------------------------
+        # REMEMBER RESPONSE
+        # -----------------------------------------------------
+
+        self.remember_ai(
+            str(reply)
+        )
+
+        # -----------------------------------------------------
+        # READY
+        # -----------------------------------------------------
+
+        self.set_state(
+            "READY"
+        )
 
         self.replyReady.emit(
-            reply
+            str(reply)
         )
 
-        return reply
+        return str(reply)

@@ -21,6 +21,8 @@ from gui.boot.suit.reactor_status import ReactorStatus
 from gui.boot.suit.servo_light import ServoLight
 from gui.boot.suit.servo_sparks import ServoSparks
 from gui.boot.suit.lock_effect import LockEffect
+from gui.common.effects.flash import Flash
+
 
 class ArmorRendererV2:
 
@@ -39,15 +41,20 @@ class ArmorRendererV2:
         self.rightLeg = Leg(False)
 
         self.reactor = SuitReactor()
+
+        # Original suit sparks
         self.sparks = []
 
-        self.flash = Flash()
-
         for i in range(60):
-
             self.sparks.append(
                 Spark()
             )
+
+        # Servo sparks are a separate effect system
+        self.servoSparks = ServoSparks()
+
+        self.flash = Flash()
+
         self.arcLeft = ElectricArc()
         self.arcRight = ElectricArc()
 
@@ -75,15 +82,38 @@ class ArmorRendererV2:
 
         self.servo = ServoLight()
 
-        self.sparks = ServoSparks()
-
         self.lock = LockEffect()
 
-        self.lockHead = LockIndicator(-180,-150,"HEAD")
-        self.lockChest = LockIndicator(-180,-10,"CHEST")
-        self.lockLeft = LockIndicator(120,-20,"LEFT ARM")
-        self.lockRight = LockIndicator(120,50,"RIGHT ARM")
-        self.lockPower = LockIndicator(-180,150,"POWER")
+        self.lockHead = LockIndicator(
+            -180,
+            -150,
+            "HEAD"
+        )
+
+        self.lockChest = LockIndicator(
+            -180,
+            -10,
+            "CHEST"
+        )
+
+        self.lockLeft = LockIndicator(
+            120,
+            -20,
+            "LEFT ARM"
+        )
+
+        self.lockRight = LockIndicator(
+            120,
+            50,
+            "RIGHT ARM"
+        )
+
+        self.lockPower = LockIndicator(
+            -180,
+            150,
+            "POWER"
+        )
+
         # ==========================
         # Assemble Animation
         # ==========================
@@ -93,7 +123,6 @@ class ArmorRendererV2:
     # ===================================
 
     def update(self):
-
 
         if self.time < 420:
             self.time += 3
@@ -124,7 +153,6 @@ class ArmorRendererV2:
 
             self.stage = 5
 
-
         if oldStage != self.stage:
 
             self.camera.shake(8)
@@ -146,8 +174,12 @@ class ArmorRendererV2:
         if self.time > 80:
 
             self.code.draw(painter)
+
             self.servo.draw(painter)
-            self.sparks.draw(painter)
+
+            self.servoSparks.draw(
+                painter
+            )
 
         if self.time < 360:
 
@@ -157,7 +189,10 @@ class ArmorRendererV2:
 
         painter.save()
 
-        painter.translate(dx, dy)
+        painter.translate(
+            dx,
+            dy
+        )
 
         # ---------------- Helmet ----------------
 
@@ -213,6 +248,7 @@ class ArmorRendererV2:
                     40,
                     "ARM LOCKED"
                 )
+
         # ---------------- Legs ----------------
 
         if self.time > 240:
@@ -250,29 +286,39 @@ class ArmorRendererV2:
             self.hud.draw(painter)
 
         if self.time > 70:
+
             self.lockHead.draw(painter)
 
         if self.time > 140:
+
             self.lockChest.draw(painter)
 
         if self.time > 220:
+
             self.lockLeft.draw(painter)
 
         if self.time > 270:
+
             self.lockRight.draw(painter)
 
         if self.time > 360:
+
             self.lockPower.draw(painter)
 
         if self.time > 390:
 
             self.eyes.draw(painter)
 
+        # ---------------- Electric Arcs ----------------
+
         if self.time > 340:
 
             painter.save()
 
-            painter.translate(-55,25)
+            painter.translate(
+                -55,
+                25
+            )
 
             self.arcLeft.draw(painter)
 
@@ -280,19 +326,27 @@ class ArmorRendererV2:
 
             painter.save()
 
-            painter.translate(55,25)
+            painter.translate(
+                55,
+                25
+            )
 
-            painter.scale(-1,1)
+            painter.scale(
+                -1,
+                1
+            )
 
             self.arcRight.draw(painter)
 
             painter.restore()
 
+        # ---------------- Original Sparks ----------------
+
         if self.time > 330:
 
-            for s in self.sparks:
+            for spark in self.sparks:
 
-                s.draw(painter)
+                spark.draw(painter)
 
         painter.restore()
 

@@ -8,6 +8,7 @@ class SearchSkill(BaseSkill):
     PREFIXES = [
         "tìm kiếm",
         "tìm",
+        "search for",
         "search",
         "google",
         "tra cứu",
@@ -20,28 +21,33 @@ class SearchSkill(BaseSkill):
 
     def execute(self, text):
 
-        query = text.lower().strip()
+        if text is None:
+            return "Không có nội dung tìm kiếm."
+
+        query = str(text).strip()
+
+        if not query:
+            return "Không có nội dung tìm kiếm."
+
+        lowered = query.lower()
 
         for prefix in self.PREFIXES:
 
-            if query.startswith(prefix):
+            if lowered.startswith(prefix):
 
                 query = query[len(prefix):].strip()
 
                 break
 
         if not query:
-
-            return "Bạn muốn tôi tìm gì?"
+            return "Không có nội dung tìm kiếm."
 
         if self.browser is None:
-
             return "Dịch vụ trình duyệt chưa sẵn sàng."
 
         success = self.browser.search(query)
 
         if success:
-
             return f"Đang tìm kiếm {query}."
 
-        return "Không thể mở trình duyệt."
+        return f"Không thể tìm kiếm {query}."
