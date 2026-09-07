@@ -9,50 +9,72 @@ try:
 except Exception:
     pyautogui = None
 
-try:
-    import pyperclip
-except Exception:
-    pyperclip = None
-
 
 class DesktopService:
-    """Bounded Windows desktop automation. No arbitrary shell command execution."""
+    """Windows desktop automation with explicit, bounded operations."""
 
     APP_ALIASES = {
-        "chrome": "chrome", "google chrome": "chrome", "edge": "msedge",
-        "microsoft edge": "msedge", "notepad": "notepad", "calculator": "calc",
-        "calc": "calc", "explorer": "explorer", "file explorer": "explorer",
-        "terminal": "wt", "windows terminal": "wt", "powershell": "powershell", "cmd": "cmd",
+        "chrome": "chrome",
+        "google chrome": "chrome",
+        "edge": "msedge",
+        "microsoft edge": "msedge",
+        "notepad": "notepad",
+        "calculator": "calc",
+        "calc": "calc",
+        "explorer": "explorer",
+        "file explorer": "explorer",
+        "terminal": "wt",
+        "powershell": "powershell",
+        "cmd": "cmd",
     }
 
     def open_app(self, name: str):
         target = self._normalize(name)
-        command = self.APP_ALIASES.get(target)
+        command = self.APP_ALIASES.get(target, target)
         if not command:
-            return f"Application '{target}' is not in the safe launcher catalog."
+            return "No application specified."
+
         try:
-            subprocess.Popen([command], shell=False)
+            subprocess.Popen(command, shell=True)
             return f"Opening {target}."
         except Exception as exc:
             return f"Could not open {target}: {exc}"
 
     def close_app(self, name: str):
         target = self._normalize(name)
-        aliases = {"chrome":"chrome.exe", "google chrome":"chrome.exe", "edge":"msedge.exe", "microsoft edge":"msedge.exe", "notepad":"notepad.exe", "calculator":"CalculatorApp.exe", "calc":"CalculatorApp.exe", "explorer":"explorer.exe"}
-        process = aliases.get(target)
-        if not process:
-            return f"Application '{target}' is not in the safe closer catalog."
+        aliases = {
+            "chrome": "chrome.exe",
+            "google chrome": "chrome.exe",
+            "edge": "msedge.exe",
+            "microsoft edge": "msedge.exe",
+            "notepad": "notepad.exe",
+            "calculator": "CalculatorApp.exe",
+            "calc": "CalculatorApp.exe",
+            "explorer": "explorer.exe",
+        }
+        process = aliases.get(target, target if target.endswith(".exe") else f"{target}.exe")
+
         try:
-            result = subprocess.run(["taskkill", "/IM", process, "/T", "/F"], capture_output=True, text=True, timeout=8)
-            return f"Closed {target}." if result.returncode == 0 else f"Could not close {target}."
+            result = subprocess.run(
+                ["taskkill", "/IM", process, "/T", "/F"],
+                capture_output=True,
+                text=True,
+                timeout=8,
+            )
+            if result.returncode == 0:
+                return f"Closed {target}."
+            return f"Could not close {target}."
         except Exception as exc:
             return f"Could not close {target}: {exc}"
 
     def press(self, key: str):
         if pyautogui is None:
             return "PyAutoGUI is not available."
+        key = key.strip().lower()
+        if not key or len(key) > 30:
+            return "Invalid key."
         try:
-            pyautogui.press(str(key).strip().lower())
+            pyautogui.press(key)
             return f"Pressed {key}."
         except Exception as exc:
             return f"Key action failed: {exc}"
@@ -60,7 +82,7 @@ class DesktopService:
     def hotkey(self, keys):
         if pyautogui is None:
             return "PyAutoGUI is not available."
-        parts = [x.strip().lower() for x in str(keys).split("+") if x.strip()]
+        parts = [x.strip().lower() for x in keys.split("+") if x.strip()]
         if not parts or len(parts) > 5:
             return "Invalid hotkey."
         try:
@@ -81,13 +103,8 @@ class DesktopService:
     def type_text(self, text: str, interval=0.01):
         if pyautogui is None:
             return "PyAutoGUI is not available."
-        value = str(text)
         try:
-            if pyperclip and any(ord(ch) > 127 for ch in value):
-                pyperclip.copy(value)
-                pyautogui.hotkey("ctrl", "v")
-            else:
-                pyautogui.write(value, interval=float(interval))
+            pyautogui.write(str(text), interval=float(interval))
             return "Text entered."
         except Exception as exc:
             return f"Typing failed: {exc}"
@@ -117,8 +134,15 @@ class DesktopService:
 
     @staticmethod
     def _normalize(value):
-        value = str(value or "").strip().lower()
-        for prefix in ("ứng dụng ", "app ", "application ", "mở ", "open ", "chạy ", "launch ", "đóng ", "tắt ", "close "):
-            if value.startswith(prefix):
-                return value[len(prefix):].strip()
-        return value
+        value = str(value or "").strip()
+        prefixes = (
+            "ứng dụng ", "app ", "application ",
+            "mở ", "open ", "chạy ", "launch ",
+            "đóng ", "tắt ", "close ",
+        )
+        lowered = value.lower()
+        for prefix in prefixes:
+            if lowered.startswith(prefix):
+                value = value[len(prefix):].strip()
+                break
+        return value.strip().lower()
